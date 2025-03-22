@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.utils.timezone import now
 from django.views.generic import ListView, DetailView
 from .models import Post, Category
@@ -14,6 +13,7 @@ class IndexListView(ListView):
         is_published__exact=True,
         category__is_published=True,
     ).order_by('-pub_date')[:5]
+
 
 '''def index(request):
     template_name = "blog/index.html"
@@ -47,7 +47,10 @@ class CategoryPostListView(ListView):
     context_object_name = "post_list"
 
     def get_queryset(self):
-        category = get_object_or_404(Category, slug=self.kwargs['category_slug'], is_published=True)
+        category = get_object_or_404(
+            Category,
+            slug=self.kwargs['category_slug'],
+            is_published=True)
         return Post.objects.filter(
             category=category,
             is_published=True,
@@ -56,9 +59,11 @@ class CategoryPostListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['category'] = get_object_or_404(Category, slug=self.kwargs['category_slug'], is_published=True)
+        context['category'] = get_object_or_404(
+            Category,
+            slug=self.kwargs['category_slug'],
+            is_published=True)
         return context
-
 
 
 '''def category_posts(request, category_slug):
